@@ -66,4 +66,19 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Compose dependencies
+    implementation("androidx.compose.ui:ui:1.6.8")           // Adjust the version based on the latest stable version
+    implementation("androidx.compose.material3:material3:1.2.1")   // Material 3 for UI components
+    implementation("androidx.compose.ui:ui-tooling-preview:1.6.8") // Preview support
+
+    // ViewModel and Compose integration
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4")
+
+    // LiveData and State support for Compose
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.8")
+
+    // Add Kotlin coroutines if necessary
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+
 }
