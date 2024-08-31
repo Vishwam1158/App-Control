@@ -12,6 +12,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.core.graphics.drawable.toBitmap
 
 @Composable
 fun AppListScreen(installedApps: List<ResolveInfo>, onAppClick: (ResolveInfo) -> Unit) {
@@ -21,13 +30,25 @@ fun AppListScreen(installedApps: List<ResolveInfo>, onAppClick: (ResolveInfo) ->
             .padding(16.dp)
     ) {
         items(installedApps) { app ->
-            Text(
-                text = app.loadLabel(LocalContext.current.packageManager).toString(),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-                    .clickable { onAppClick(app) }
-            )
+            AppItem(app = app, onClick = { onAppClick(app) })
         }
+    }
+}
+
+@Composable
+fun AppItem(app: ResolveInfo, onClick: () -> Unit) {
+    val context = LocalContext.current
+    val icon: ImageBitmap = app.loadIcon(context.packageManager).toBitmap().asImageBitmap()
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(bitmap = icon, contentDescription = null, modifier = Modifier.size(48.dp))
+        Spacer(modifier = Modifier.width(16.dp))
+        Text(text = app.loadLabel(context.packageManager).toString())
     }
 }
