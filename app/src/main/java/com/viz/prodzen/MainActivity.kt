@@ -54,26 +54,65 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            // Initialize the ViewModel with the PackageManager
             val viewModel: AppViewModel = viewModel(factory = AppViewModelFactory(packageManager))
+
             MyApp(viewModel)
         }
     }
 }
+
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//fun MyApp(viewModel: AppViewModel) {
+//    val installedApps by viewModel.installedApps.collectAsState(emptyList())
+//
+//    Scaffold(
+//        topBar = {
+//            TopAppBar(title = { Text("Select Apps") })
+//        },
+//        content = {
+//                    Spacer(modifier = Modifier.padding(it))
+//            AppListScreen(installedApps = installedApps, viewModel = viewModel)
+//        }
+//    )
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyApp(viewModel: AppViewModel) {
     val installedApps by viewModel.installedApps.collectAsState(emptyList())
 
-    Scaffold(
-        topBar = {
-            TopAppBar(title = { Text("Select Apps") })
-        },
-        content = {
-                    Spacer(modifier = Modifier.padding(it))
-            AppListScreen(installedApps = installedApps, viewModel = viewModel)
-        }
-    )
+    // Check if apps have been loaded
+    if (installedApps.isNotEmpty()) {
+        Scaffold(
+            topBar = {
+                TopAppBar(title = { Text("Select Apps") })
+            },
+            content = {
+                Spacer(modifier = Modifier.padding(it))
+
+                AppListScreen(installedApps = installedApps, viewModel = viewModel)
+            }
+        )
+    } else {
+        // Display loading or empty state
+        Scaffold(
+            topBar = {
+                TopAppBar(title = { Text("Select Apps") })
+            },
+            content = {
+                Spacer(modifier = Modifier.padding(it))
+
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = "Loading apps...")
+                }
+            }
+        )
+    }
 }
 
 
