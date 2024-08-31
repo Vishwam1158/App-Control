@@ -64,13 +64,19 @@ fun AppItem(app: ResolveInfo, viewModel: AppViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { viewModel.toggleAppSelection(app) }
-            .background(if (isSelected) Color.LightGray else Color.Transparent),
+            .clickable { viewModel.toggleAppSelection(app) },
         verticalAlignment = Alignment.CenterVertically
     ) {
+        Checkbox(
+            checked = isSelected,
+            onCheckedChange = { viewModel.toggleAppSelection(app) }
+        )
+
         val icon = app.loadIcon(context.packageManager).toBitmap().asImageBitmap()
         Image(bitmap = icon, contentDescription = null, modifier = Modifier.size(48.dp))
+
         Spacer(modifier = Modifier.width(16.dp))
+
         Text(text = app.loadLabel(context.packageManager).toString())
     }
 }
